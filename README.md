@@ -33,3 +33,7 @@ Now open the application in the browser by following this link: http://localhost
 Of course you can change ports for your application to run on you machine
 
 To do this change ports in `# sail` section in `.env` file
+
+In development stage run this command :
+```./vendor/bin/sail npm install && ./vendor/bin/sail npm run dev ```
+This will compile your assets and auto reload your page.
