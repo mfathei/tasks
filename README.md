@@ -28,9 +28,9 @@ As we use Queues in Laravel you will need to run this command and keep it runnin
 
 ``` ./vendor/bin/sail artisan queue:work ```
 
-Now open the application in the browser by following this link: http://localhost:8088
+Now open the application in your browser by following this link: http://localhost:8088
 
-Of course you can change ports for your application to run on you machine
+Of course you can change ports for your application to run on your machine
 
 To do this change ports in `# sail` section in `.env` file
 
