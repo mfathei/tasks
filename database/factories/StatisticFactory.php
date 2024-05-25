@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Statistic>
  */
-class StatisticsFactory extends Factory
+class StatisticFactory extends Factory
 {
     public function definition(): array
     {
