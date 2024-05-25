@@ -49,4 +49,14 @@ class User extends Authenticatable
     {
         return $query->where('is_admin', true);
     }
+
+    public function scopeStandard($query)
+    {
+        return $query->where('is_admin', false);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
+    }
 }

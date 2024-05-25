@@ -1,14 +1,14 @@
 @extends('adminlte::page')
 
-@section('title', trans('task.title'))
+@section('title', trans('task.create.title'))
 
 @section('content_header')
-    <h1>{{ trans('task.title') }}</h1>
+    <h1>{{ trans('task.create.title') }}</h1>
 @stop
 
 @section('content')
     @include('flash')
-    @include('task.table', ['tasks' => $tasks])
+    @include('task.form')
 @stop
 
 @section('css')
