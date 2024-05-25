@@ -324,6 +324,13 @@ return [
                 ],
             ],
         ],
+        [
+            'text' => 'Statistics',
+            'url' => 'statistics',
+            'icon' => 'far fa-fw fa-file',
+            'label' => 10,
+            'label_color' => 'success',
+        ],
     ],
 
     /*

@@ -19,4 +19,5 @@ return [
         'description' => 'Description',
         'assignedTo' => 'Assigned User',
     ],
+    'statistics' => 'Statistics',
 ];

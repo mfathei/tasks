@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Task;
 use App\Models\User;
+use App\Observers\TaskObserver;
 use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -40,5 +42,6 @@ class EventServiceProvider extends ServiceProvider
     public function registerObservers(): void
     {
         User::observe(UserObserver::class);
+        Task::observe(TaskObserver::class);
     }
 }
