@@ -17,12 +17,9 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: pdo mysql mbstring bcmath zip iconv
-      - name: Build Sail
-        run: |
-          ./vendor/bin/sail build
       - name: Install dependencies
         run: |
-          ./vendor/bin/sail php artisan install --no-interaction --prefer-dist
+          composer install --no-interaction --prefer-dist
       - name: Cache composer packages
         uses: actions/cache@v3
         with:
