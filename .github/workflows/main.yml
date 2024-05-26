@@ -1,4 +1,4 @@
-name: Run Laravel Sail Tests
+name: Laravel Tests
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: sail
+          MYSQL_DATABASE: test
         ports:
           - 3306:3306
         options: >-
@@ -28,27 +28,39 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install PHP and Composer
+      - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
           extensions: mbstring, pdo, pdo_mysql, intl, bcmath
-          coverage: none
 
-      - name: Install Composer Dependencies
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
-      - name: Set up Docker Compose
-        run: sudo apt-get update && sudo apt-get install docker-compose -y
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
 
-      - name: Build and start Sail
+      - name: Generate application key
+        run: php artisan key:generate
+
+      - name: Configure database
         run: |
-          cp .env.example .env
-          ./vendor/bin/sail up -d
-        env:
-          MYSQL_PASSWORD: password
+          php artisan config:clear
+          php artisan migrate --force
 
       - name: Run Tests
-        run: |
-          ./vendor/bin/sail test
-        working-directory: /var/www/html
+        run: php artisan test
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: test
+          DB_USERNAME: root
+          DB_PASSWORD: password
