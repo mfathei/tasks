@@ -49,4 +49,6 @@ jobs:
           MYSQL_PASSWORD: password
 
       - name: Run Tests
-        run: ./vendor/bin/sail test
+        run: |
+          ./vendor/bin/sail test
+        working-directory: /var/www/html
