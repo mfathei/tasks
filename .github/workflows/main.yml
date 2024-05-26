@@ -29,4 +29,4 @@ jobs:
             ${{ runner.os }}-php-${{ matrix.php }}-build-
       - name: Run tests
         run: |
-          ./vendor/bin/sail php artisan test
+          ./vendor/bin/sail up -d && ./vendor/bin/sail test
