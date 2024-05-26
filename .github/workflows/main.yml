@@ -11,9 +11,6 @@ on:
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php: [ '8.2' ]
     services:
       mysql:
         image: mysql:5.7
@@ -29,18 +26,27 @@ jobs:
           --health-retries=3
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Docker Compose
-      run: sudo apt-get update && sudo apt-get install docker-compose -y
+      - name: Install PHP and Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: mbstring, pdo, pdo_mysql, intl, bcmath
+          coverage: none
 
-    - name: Build and start Sail
-      run: |
-        cp .env.example .env
-        composer install --no-interaction
-        ./vendor/bin/sail up -d
-      env:
-        MYSQL_PASSWORD: password
+      - name: Install Composer Dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Run Tests
-      run: ./vendor/bin/sail test
+      - name: Set up Docker Compose
+        run: sudo apt-get update && sudo apt-get install docker-compose -y
+
+      - name: Build and start Sail
+        run: |
+          cp .env.example .env
+          ./vendor/bin/sail up -d
+        env:
+          MYSQL_PASSWORD: password
+
+      - name: Run Tests
+        run: ./vendor/bin/sail test
