@@ -1,32 +1,43 @@
-name: testing
+name: Run Laravel Sail Tests
 
 on:
   push:
-    branches: [ ci ]
+    branches:
+      - ci
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  laravel-tests:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php: [ '8.2' ]
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: sail
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: pdo mysql mbstring bcmath zip iconv
-      - name: Install dependencies
-        run: |
-          composer install --no-interaction --prefer-dist
-      - name: Cache composer packages
-        uses: actions/cache@v3
-        with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ matrix.php }}-build-${{ hashFiles('composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php }}-build-
-      - name: Run tests
-        run: |
-          ./vendor/bin/sail up -d && ./vendor/bin/sail test
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Compose
+      run: sudo apt-get update && sudo apt-get install docker-compose -y
+
+    - name: Build and start Sail
+      run: |
+        cp .env.example .env
+        ./vendor/bin/sail up -d
+        ./vendor/bin/sail composer install --no-interaction --prefer-dist
+      env:
+        MYSQL_PASSWORD: password
+
+    - name: Run Tests
+      run: ./vendor/bin/sail test
