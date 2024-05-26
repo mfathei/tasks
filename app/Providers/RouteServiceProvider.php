@@ -32,10 +32,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
-                ->group(function () {
-                    require_once base_path('routes/web.php');
-                    require_once base_path('routes/task.php');
-                });
+                ->group(base_path('routes/web.php'));
+
+            Route::middleware('web')
+                ->group(base_path('routes/task.php'));
         });
     }
 
