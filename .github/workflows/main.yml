@@ -34,8 +34,8 @@ jobs:
     - name: Build and start Sail
       run: |
         cp .env.example .env
+        composer install --no-interaction --prefer-dist
         ./vendor/bin/sail up -d
-        ./vendor/bin/sail composer install --no-interaction --prefer-dist
       env:
         MYSQL_PASSWORD: password
 
