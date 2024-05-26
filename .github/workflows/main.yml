@@ -30,13 +30,12 @@ jobs:
 
     - name: Set up Docker Compose
       run: sudo apt-get update && sudo apt-get install docker-compose -y
-    - name: Install dependencies
-      run: composer install --no-interaction --prefer-dist
 
     - name: Build and start Sail
       run: |
         cp .env.example .env
         ./vendor/bin/sail up -d
+        ./vendor/bin/sail composer install --no-interaction
       env:
         MYSQL_PASSWORD: password
 
