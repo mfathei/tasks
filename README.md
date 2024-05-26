@@ -30,10 +30,13 @@ As we use Queues in Laravel you will need to run this command and keep it runnin
 
 Now open the application in your browser by following this link: http://localhost:8088
 
-Of course you can change ports for your application to run on your machine
+Of course, you can change ports for your application to run on your machine
 
 To do this change ports in `# sail` section in `.env` file
 
 In development stage run this command :
 ```./vendor/bin/sail npm install && ./vendor/bin/sail npm run dev ```
 This will compile your assets and auto reload your page.
+
+To run tests use the following command:
+``` ./vendor/bin/sail test```
